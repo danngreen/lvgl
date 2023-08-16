@@ -18,7 +18,6 @@ extern "C" {
 #define LVGL_VERSION_PATCH 7
 #define LVGL_VERSION_INFO ""
 
-static unsigned TemporaryImage;
 /*********************
  *      INCLUDES
  *********************/
