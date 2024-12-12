@@ -138,6 +138,7 @@ void lv_draw_sw_polygon(lv_draw_ctx_t * draw_ctx, const lv_draw_rect_dsc_t * dra
     bool inv = false;
     if(dyl * dxr < dyr * dxl) inv = true;
 
+    unsigned bailout = 1000;
     do {
         if(!inv) {
             i_next_left = i_prev_left - 1;
@@ -183,7 +184,9 @@ void lv_draw_sw_polygon(lv_draw_ctx_t * draw_ctx, const lv_draw_rect_dsc_t * dra
             i_prev_right = i_next_right;
         }
 
-    } while(mask_cnt < point_cnt);
+    } while(mask_cnt < point_cnt && bailout--);
+    if (bailout == 0)
+        LV_LOG_WARN("Concave polygon\n");
 
     lv_draw_rect(draw_ctx, draw_dsc, &poly_coords);
 
