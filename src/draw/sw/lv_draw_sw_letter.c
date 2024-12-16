@@ -103,7 +103,6 @@ void lv_draw_sw_letter(lv_draw_ctx_t * draw_ctx, const lv_draw_label_dsc_t * dsc
         if(letter >= 0x20 &&
            letter != 0xf8ff && /*LV_SYMBOL_DUMMY*/
            letter != 0x200c) { /*ZERO WIDTH NON-JOINER*/
-            LV_LOG_WARN("lv_draw_letter: glyph dsc. not found for U+%" LV_PRIX32, letter);
 
 #if LV_USE_FONT_PLACEHOLDER
             /* draw placeholder */
@@ -120,6 +119,8 @@ void lv_draw_sw_letter(lv_draw_ctx_t * draw_ctx, const lv_draw_label_dsc_t * dsc
             glyph_dsc.border_color = dsc->color;
             glyph_dsc.border_width = 1;
             draw_ctx->draw_rect(draw_ctx, &glyph_dsc, &glyph_coords);
+#else
+            LV_LOG_WARN("lv_draw_letter: glyph dsc. not found for U+%" LV_PRIX32, letter);
 #endif
         }
         return;
