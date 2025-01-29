@@ -57,15 +57,18 @@ if("${INC_INSTALL_DIR}" STREQUAL "")
   set(INC_INSTALL_DIR "include/lvgl")
 endif()
 
+
+cmake_path(SET install_normalized1 NORMALIZE "${CMAKE_INSTALL_PREFIX}/${INC_INSTALL_DIR}")
 install(
   DIRECTORY "${CMAKE_SOURCE_DIR}/src"
-  DESTINATION "${CMAKE_INSTALL_PREFIX}/${INC_INSTALL_DIR}/"
+  DESTINATION "${install_normalized1}"
   FILES_MATCHING
   PATTERN "*.h")
 
+cmake_path(SET install_normalized2 NORMALIZE "${CMAKE_INSTALL_PREFIX}/${INC_INSTALL_DIR}/../")
 install(
   FILES "${LV_CONF_PATH}"
-  DESTINATION "${CMAKE_INSTALL_PREFIX}/${INC_INSTALL_DIR}/../"
+  DESTINATION "${install_normalized2}"
   RENAME "lv_conf.h"
   OPTIONAL)
 
