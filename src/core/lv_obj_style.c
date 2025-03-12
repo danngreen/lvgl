@@ -89,6 +89,10 @@ void lv_obj_add_style(lv_obj_t * obj, lv_style_t * style, lv_style_selector_t se
 
     /*Allocate space for the new style and shift the rest of the style to the end*/
     obj->style_cnt++;
+    if (obj->style_cnt == 0) {
+        LV_LOG_ERROR("lv_obj_add_style: style count overflowed\n");
+        obj->style_cnt = 1;
+    }
     obj->styles = lv_mem_realloc(obj->styles, obj->style_cnt * sizeof(_lv_obj_style_t));
 
     uint32_t j;
@@ -552,6 +556,11 @@ static lv_style_t * get_local_style(lv_obj_t * obj, lv_style_selector_t selector
     }
 
     obj->style_cnt++;
+    if (obj->style_cnt == 0) {
+        LV_LOG_ERROR("get_local_style: style count overflowed\n");
+        obj->style_cnt = 1;
+    }
+
     obj->styles = lv_mem_realloc(obj->styles, obj->style_cnt * sizeof(_lv_obj_style_t));
     LV_ASSERT_MALLOC(obj->styles);
 
@@ -579,6 +588,7 @@ static lv_style_t * get_local_style(lv_obj_t * obj, lv_style_selector_t selector
  */
 static _lv_obj_style_t * get_trans_style(lv_obj_t * obj,  lv_style_selector_t selector)
 {
+
     uint32_t i;
     for(i = 0; i < obj->style_cnt; i++) {
         if(obj->styles[i].is_trans && obj->styles[i].selector == selector) break;
@@ -588,6 +598,12 @@ static _lv_obj_style_t * get_trans_style(lv_obj_t * obj,  lv_style_selector_t se
     if(i != obj->style_cnt) return &obj->styles[i];
 
     obj->style_cnt++;
+
+    if (obj->style_cnt == 0) {
+        LV_LOG_ERROR("get_trans_style: style count overflowed\n");
+        obj->style_cnt = 1;
+    }
+
     obj->styles = lv_mem_realloc(obj->styles, obj->style_cnt * sizeof(_lv_obj_style_t));
 
     for(i = obj->style_cnt - 1; i > 0 ; i--) {
